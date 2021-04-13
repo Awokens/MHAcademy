@@ -1,0 +1,19 @@
+
+on break:
+
+    add 1 to {blocksbroken::%player's uuid%}
+    set {_levels} to "A|10,B|25,C|45,D|60,E|75,F|90"
+
+    if {level::%player's uuid%} is "F":
+        exit
+
+    loop split {_levels} at ",":
+        set {_i::*} to split loop-value at "|"
+        {blocksbroken::%player's uuid%} == {_i::2}:
+            set {level::%player's uuid%} to {_i::1}
+            send "You have leveled up to %{_i::1}%"
+
+
+
+on chat:
+    set chat format to "%{level::%player's uuid%}% %player%: %message%"

@@ -1,0 +1,27 @@
+
+set {_nbt} to nbt of <entity or specific blocks chosen by minecraft>
+
+set {_nbt} to nbt of target entity
+
+Addons: skBee (additional)
+
+send pretty nbt of {_nbt} with split " "
+
+set {_custom} to tag "BukkitValues;skbee-custom" of {_nbt}
+
+set tag "id" of {_custom} to 10
+
+spawn zombie
+
+add "{NoAI:1}" to nbt of last spawned entity
+
+
+
+
+function getCustomTag(e: entity, tag: string) :: string:
+
+    set {_custom} to tag "BukkitValues;skbee-custom" of (nbt of {_e})
+
+    set {_tag} to tag {_tag} of {_custom}
+
+    return {_tag}

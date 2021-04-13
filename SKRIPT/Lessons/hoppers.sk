@@ -1,0 +1,29 @@
+on place:
+
+    event-block is hopper
+    if {chunkhoppers::*} contains chunk at event-block:
+        send "There's already one!"
+        cancel event
+    else:
+
+        add chunk at event-block to {chunkhoppers::*}
+
+    
+on break:
+
+    event-block is hopper
+    if {chunkhoppers::*} contains chunk at event-block:
+        remove chunk at event-block from {chunkhoppers::*}
+        send "Successfully removed a chunk hopper at %chunk at event-block%"
+
+
+on drop:
+
+
+    if {chunkhoppers::*} contains chunk at event-entity:
+
+        set {_hoppers::*} to blocks in chunk at event-entity where [input is hopper]
+
+        teleport event-entity to block above {_hoppers::1}
+
+    

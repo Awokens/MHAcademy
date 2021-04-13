@@ -1,0 +1,37 @@
+command /create <string>:
+    trigger:
+        
+        if size of (arg-1 split at "") > 10:
+            send "no u"
+        else if {plot::*} contains uncolored arg-1:
+            send "no u"
+        else:
+            createPlot(player, uncolored arg-1)
+
+
+
+function createPlot(p: player, title: string):
+
+    add 25 to z-coordinate of {location}
+
+    set {_posA} to block 5 meters southeast of {location}
+    set {_posB} to block 5 meters northwest of {location}
+
+    loop blocks within {_posA} and {_posB}:
+        set loop-block to grass block
+    
+    set block at {location} to bedrock
+
+    set y-coordinate of {_posA} to 0
+    set y-coordinate of {_posB} to 255
+
+    set {plot::%{_title}%::*} to {_title}, {_posA}, {_posB} and location of block above {location}
+
+    teleport {_p} to {plot::%{_title}%::4}
+
+    #optional: add "custom:{plot:%{_title}%}" to nbt of {_p}
+
+    send "&aYou have created a cell! %{_title}%" to {_p}
+
+
+

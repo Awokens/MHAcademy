@@ -1,0 +1,31 @@
+function convert_items(p: player, reverse: boolean, i: integer):
+    set {_values::*} to brown dye, iron ingot, gold ingot and diamond
+    {_reverse} is true:
+        set {_values::*} to reversed {_values::*}
+        
+    loop size of {_values::*} times:
+    
+        loop-value = {_i}:
+            exit loop
+
+        loop-value = size of {_values::*}:
+            exit loop
+
+        set {_item} to {_values::%loop-value%}
+        set {_amount} to amount of {_item} in {_p}'s inventory
+
+        if {_amount} ? 0 is 0:
+            continue
+
+        set {_conv} to ("%floor({_reverse} ? {_amount} * 16 : {_amount} / 16)%" parsed as integer)
+        if {_conv} ? 0 is 0:
+            continue
+
+        if {_reverse} is true:
+            remove {_conv} of {_item} from {_p}'s inventory
+            add {_conv} of {_values::%loop-value + 1%} to {_p}'s inventory
+        else:
+            remove (16 * {_conv}) of {_item} from {_p}'s inventory
+            add {_conv} of {_values::%loop-value + 1%} to {_p}'s inventory
+
+    send "&aSuccessfully converted." to {_p}

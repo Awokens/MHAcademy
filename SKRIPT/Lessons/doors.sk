@@ -1,0 +1,42 @@
+
+#This is a hard coded door skript, in the future, there will be an universal edition.
+
+on right click:
+    event-block is stone button
+
+    set {_posA} to <location 1>
+    set {_posB} to <location 2>
+
+
+    {door} is true:
+        exit
+
+    if {door} is false:
+        set {door} to true
+
+    
+    loop 18 times:
+        if loop-value <= 9:
+
+            loop blocks within {_posA} and {_posB}:
+                set loop-block to air
+            if loop-value < 9:
+                add 1 to y-coordinate of {_posA}
+                add 1 to y-coordinate of {_posB}
+
+            wait 1 tick
+        else:
+
+            loop blocks within {_posA} and {_posB}:
+                set loop-block to glass block
+            remove 1 from y-coordinate of {_posA}
+            remove 1 from y-coordinate of {_posB}
+
+            if loop-value is 18:
+                loop blocks within {_posA} and {_posB}:
+                    show large explosion above loop-block
+                    kill entities in radius 1 of loop-block
+
+            wait 1 tick
+
+    set {door} to false

@@ -1,0 +1,10 @@
+function JackHammer(target: location, p: player, size: integer):
+	set {_posA} to block {_size} meters south east of {_target}
+	set {_posB} to block {_size} meters north west of {_target}
+	loop blocks within {_posA} and {_posB}:
+		{blocks::*} contains loop-block
+		set loop-block to air
+
+
+on break:
+    JackHammer(event-block, player, 5)

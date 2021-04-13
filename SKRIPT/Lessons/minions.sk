@@ -1,0 +1,73 @@
+
+# Minions Basic Tutorial
+
+
+function getDirection(e: entity) :: number:
+
+    set {_dir} to {_e}'s facing
+
+    if {_dir} is north:
+        return 180.0
+    if {_dir} is west:
+        return 90.0
+    if {_dir} south:
+        return 0.0
+    if {_dir} east:
+        -90.0
+    return 0.0
+
+function spawnMinion(p: player) :: entity:
+
+    spawn armor stand above ({_p}'s target block)
+
+    set {_dir} to getDirection({_p})
+
+    add "{DisabledSlots:2039583,HandItems:[{id:""wooden_pickaxe"",Count:1s,tag:{Unbreakable:1,Damage:0}},{}],NoBasePlate:1b,ShowArms:1b,Small:1b,Rotation:[%{_dir}%f,0.0f]}" to nbt of last spawned armor stand
+
+    return last spawned armor stand
+
+#use this part based on the context of where it's placed, such as an event. Right clicking for example.
+
+block above target block is air
+
+set {_minion} to spawnMinion(player)
+
+set {_i} to 0
+while {_minion} is alive:
+
+    if {_i} is 0:
+        loop 10 times:
+            add "{Pose:{RightArm:[%{_i}%f,0f,0f]}" to nbt of {_minion}
+            subtract 8 from {_i}
+            wait 1 tick
+    else if {_i} is -80:
+        loop 10 times:
+            add "{Pose:{RightArm:[%{_i}%f,0f,0f]}" to nbt of {_minion}
+            add 8 to {_i}
+            wait 1 tick
+    else:
+        set {_owner} to getCustomTag(player, "owner")
+        
+        #save tag here.
+
+        kill {_minion}
+
+
+
+function getCustomTag(e: entity, tag: string) :: string:
+
+    set {_custom} to tag "BukkitValues;skbee-custom" of (nbt of {_e})
+
+    set {_tag} to tag {_tag} of {_custom}
+
+    return {_tag}
+
+
+
+
+
+
+
+
+    
+
