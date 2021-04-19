@@ -11,7 +11,7 @@ set {_custom} to tag "BukkitValues;skbee-custom" of {_nbt}
 
 set tag "id" of {_custom} to 10
 
-spawn zombie
+spawn zombie with nbt "{NoAI:1}"
 
 add "{NoAI:1}" to nbt of last spawned entity
 

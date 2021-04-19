@@ -4,24 +4,20 @@ on right click with tnt:
         set metadata tag "delay-bomb" of player to now
 
     set {_meta} to metadata tag "delay-bomb" of player
-
     if difference between {_meta} and now <= 1 second:
         send action bar "You may not throw too many bombs at once!" to player
         exit
     
-    set metadata tag "delay-bomb" of player to now
-
     shoot primed tnt at speed 1
-
     set {_tnt} to last shot primed tnt
-
+    set metadata tag "delay-bomb" of player to now
     set metadata tag "custom-bomb" of {_tnt} to true
-
     set fuse time of {_tnt} to 20
 
     loop 20 times:
         show large explosion at {_tnt}
         wait 1 tick
+
     show huge explosion at {_tnt}
     play sound "entity.dragon_fireball.explode" at volume 25 at {_tnt}
 
@@ -30,6 +26,5 @@ on right click with tnt:
             set loop-block to air
 
 on explode:
-    # broadcast "%metadata tag ""custom-bomb"" of event-entity%"
     if metadata tag "custom-bomb" of event-entity is true:
         cancel event

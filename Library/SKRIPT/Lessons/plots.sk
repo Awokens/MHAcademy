@@ -21,7 +21,6 @@ function createPlot(p: player, title: string):
         set loop-block to grass block
     
     set block at {location} to bedrock
-
     set y-coordinate of {_posA} to 0
     set y-coordinate of {_posB} to 255
 

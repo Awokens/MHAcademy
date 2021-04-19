@@ -1,4 +1,5 @@
 on load:
+
     shutdown "vixio-tutorial"
 
     login to "TOKEN HERE" with the name "vixio-tutorial"
@@ -11,7 +12,7 @@ on chat:
         set author info of embed to an author named "%player%" with no url and icon "https://www.mc-heads.net/avatar/%player's uuid%"
         set the colour of the embed to color from rgb 227, 38, 54
         set the timestamp of embed to now
-    
+
     send the last created embed to channel with id "833189952917471282" in guild with id "761655519223349278" with "vixio-tutorial"
 
 on guild message receive:

@@ -7,7 +7,6 @@ function convert_items(p: player, reverse: boolean, i: integer):
     
         loop-value = {_i}:
             exit loop
-
         loop-value = size of {_values::*}:
             exit loop
 

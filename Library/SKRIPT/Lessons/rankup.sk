@@ -1,11 +1,12 @@
 
 on break:
 
-    add 1 to {blocksbroken::%player's uuid%}
-    set {_levels} to "A|10,B|25,C|45,D|60,E|75,F|90"
 
     if {level::%player's uuid%} is "F":
         exit
+
+    add 1 to {blocksbroken::%player's uuid%}
+    set {_levels} to "A|10,B|25,C|45,D|60,E|75,F|90"
 
     loop split {_levels} at ",":
         set {_i::*} to split loop-value at "|"

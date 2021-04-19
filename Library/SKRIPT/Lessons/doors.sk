@@ -13,7 +13,6 @@ on right click:
 
     if {door} is false:
         set {door} to true
-
     
     loop 18 times:
         if loop-value <= 9:

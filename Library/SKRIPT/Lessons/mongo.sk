@@ -48,9 +48,9 @@ command /balance:
 
 command /profile <player>:
 	trigger:
+	
 		set {_filter} to a new mongosk filter where field "uuid" is "%player's uuid%"
 		set {_doc} to first mongo document with filter {_filter} of collection {collection}
-
 		set {_values} to "uuid|balance|tokens|level|prestige"
 
 		send "Profile of %player%"

@@ -1,7 +1,6 @@
 
 # Minions Basic Tutorial
 
-
 function getDirection(e: entity) :: number:
 
     set {_dir} to {_e}'s facing
@@ -47,8 +46,6 @@ while {_minion} is alive:
             wait 1 tick
     else:
         set {_owner} to getCustomTag(player, "owner")
-        
-        #save tag here.
 
         kill {_minion}
 
