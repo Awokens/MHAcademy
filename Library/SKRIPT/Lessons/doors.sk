@@ -7,7 +7,6 @@ on right click:
     set {_posA} to <location 1>
     set {_posB} to <location 2>
 
-
     {door} is true:
         exit
 
