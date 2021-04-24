@@ -1,0 +1,124 @@
+command /giveminion [<number>]:
+	usage: /give minion [<speed (optional)>] 
+	trigger:
+		set {_nbt} to "{DisabledSlots:2039583,HandItems:[{id:""netherite_pickaxe"",Count:1s,tag:{Unbreakable:1,Damage:0}},{}],NoBasePlate:1,ShowArms:1,Small:1b,custom:{count:5,speed:%arg-1 ? 1%,owner-uuid:""%player's uuid%"",mining:1b}}"
+
+		give player cod spawn egg named "&eMinion" with lore "%{_nbt}%"
+
+		send "You gave yourself a minion with speed %arg-1 ? 1%"
+
+function getDirection(p: player) :: number:
+
+	set {_dir} to {_p}'s facing
+
+	if {_dir} is north:
+		return 180.0
+	if {_dir} is west:
+		return 90.0
+	if {_dir} is south:
+		return 0.0
+	if {_dir} is east:
+		return -90.0
+	return 0.0
+
+function runArmRotation(e: entity):
+
+	add "{Pose:{RightArm:[0f,0f,0f]}}" to nbt of {_e}
+
+	set {_i} to 0
+
+	while {_e} is alive:
+
+		if {_i} is 0:
+
+			loop 10 times:
+				add "{Pose:{RightArm:[%{_i}%f,0f,0f]}}" to nbt of {_e}
+				subtract 8 from {_i}
+				wait 1 tick
+		else if {_i} is -80:
+			loop 10 times:
+				add "{Pose:{RightArm:[%{_i}%f,0f,0f]}}" to nbt of {_e}
+				add 8 to {_i}
+				wait 1 tick
+		else:
+			set {_i} to 0
+
+on load:
+	set {ores::*} to coal ore, iron ore, diamond ore and emerald ore
+	set {times::*} to 60 ticks, 120 ticks, 180 ticks and 270 ticks
+
+function runMinion(e: entity, p: player):
+
+	set {_nbt} to nbt compound of {_e}
+	set {_count} to tag "custom;count" of {_nbt}
+	set {_speed} to tag "custom;speed" of {_nbt}
+	set {_custom} to tag "BukkitValues;skbee-custom" of {_nbt}
+	set {_prev-custom} to "%{_custom}%"
+	
+	while metadata tag "mining" of {_e} is true:
+
+		if {_prev-custom} isn't "%{_custom}%":
+			set {_count} to tag "custom;count" of {_nbt}
+			set {_speed} to tag "custom;speed" of {_nbt}
+		
+
+		
+		if {_e} isn't alive:
+			exit
+
+		if {_e}'s held item is air:
+			set metadata tag "mining" of {_e} to false
+			exit
+
+		loop {_count} times:
+
+			set {_block} to block loop-value meters infront of {_e}
+			
+			{ores::*} contains {_block}
+			getOreTimer({_block}'s location, {_block})
+			set {_drops::*} to drops of {_block} with {_e}'s held item
+			drop {_drops::*} above {}
+			set block at {_block} to bedrock
+
+			exit loop
+		wait ("%{_speed}% seconds" parsed as timespan)
+		
+
+function getOreTimer(l: location, i: item):
+	set {_ticks} to 0 ticks
+	loop {ores::*}:
+		{_i} = loop-value
+		set {_ticks} to {times::%loop-index%}
+		wait {_ticks}
+		set block at {_l} to {_i}		
+
+
+on right click:
+
+	held item's name is "&eMinion"
+	cancel event
+	clicked block isn't air
+
+	set {_block} to block above clicked block's location
+
+	set {_size} to size of all entities in radius 0.5 of {_block} 
+	if {_size} > 0:
+		send "You cannot summon a minion here! %{_size}%"
+		exit
+
+	
+	set {_nbt} to 1st line of held item's lore
+	spawn armor stand at {_block} with nbt "%{_nbt}%"
+	set {_last} to last spawned armor stand
+	set metadata tag "mining" of {_last} to true
+	#add "{Rotation:[%getDirection(player)%f,0.0f],Pos:[%x-coordinate of {_block}%d,%z-coordinate of {_block}%d]}" to nbt of {_last}
+
+	runArmRotation({_last})
+
+	runMinion({_last}, player)
+
+
+
+
+
+	

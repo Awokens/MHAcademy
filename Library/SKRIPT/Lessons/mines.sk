@@ -1,0 +1,21 @@
+
+
+
+function mineReset(name: string, posA: location, posB: location, type: block)
+
+
+    set blocks within {_posA} and {_posB} to {_type}
+    loop {mines::%{_name}%::4} - 1:
+
+
+        subtract 1 from x-coordinate of {_posA}
+        subtract 1 from x-coordinate of {_posB}
+
+        loop blocks within {_posA} and {_posB}:
+            if loop-block is air:
+                set loop-block to {_type}
+
+        wait 1 second
+
+    broadcast "%{mines::%{_name}%}% has been successfully reset!"
+

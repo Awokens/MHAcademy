@@ -1,0 +1,90 @@
+on damage:
+	victim is a player
+	attacker is a player
+
+	exit if {combat-enable} is false
+	set metadata tag "combat-tag" of victim to now
+	set metadata tag "combat-tag" of attacker to now
+	
+	runTimer(victim)
+	runTimer(attacker)
+	
+function runTimer(p: player):
+
+	set {_count} to metadata tag "combat-tags" of {_p}
+	set metadata tag "combat-tags" of {_p} to {_count} + 1
+	
+	set {_n} to 10
+	set {_combat} to getCombat({_p})
+	set {_count} to metadata tag "combat-tags" of {_p}	
+
+	while getCombat({_p}) <= 10 seconds:
+
+		exit if {combat-enable} is false
+		if {_count} != metadata tag "combat-tags" of {_p}:
+			exit
+		send action bar "&a%{_n}%&f second(s)" to {_p}
+		subtract 1 from {_n}
+		wait 1 second
+	send action bar "Combat over." to {_p}
+
+on death:
+	victim is a player
+	attacker is a player
+
+	clear metadata tag "combat-tags" of victim
+	clear metadata tag "combat-tags" of attacker
+
+	clear metadata tag "combat-tag" of victim
+	clear metadata tag "combat-tag" of attacker
+
+on respawn:
+	clear metadata tag "combat-tag" of player
+	clear metadata tag "combat-tags" of player
+
+on command:
+	player's gamemode is survival
+
+	full command isn't "playmode"
+
+	(metadata tag "playmode" of player ? true) is true
+	if getCombat(player) <= 10 seconds:
+		send "&cUnable to execute general commands whilst in combat!"
+		cancel event
+
+command /setcombat <boolean>:
+	permission: *
+	trigger:
+		set {combat-enable} to arg-1
+		send "%arg-1 ? ""&aEnabled"" : ""&cDisabled""%&f the combat system."
+
+command /playmode:
+	permission: staff.playmode
+	trigger:
+		
+		set {_meta} to metadata tag "playmode" of player
+
+		if {_meta} isn't set:
+			set {_meta} to false
+
+		send "%{_meta} ? ""&cDisabled"" : ""&aEnabled""% play mode."
+		set metadata tag "playmode" of player to {_meta} ? false : true
+
+function getCombat(p: player) :: timespan:
+	set {_meta} to metadata tag "combat-tag" of {_p}
+	return difference between {_meta} and now
+
+# on join:
+# 	if metadata tag "respawn" of player is true:
+# 		make console execute command "/minecraft:execute in minecraft:overworld run tp %player% 0 250 0"
+# 		wait 1 tick
+# 		make console execute command "/minecraft:spreadplayers ~ ~ 50 50 false %player%"
+# 		set metadata tag "respawn" of player to false
+
+
+on quit:
+	{combat-enable} is true
+	(metadata tag "playmode" of player ? true) is true
+	getCombat(player) <= 10 seconds
+	set metadata tag "respawn" of player to true
+	execute console command "kill %player%"
