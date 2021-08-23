@@ -2,7 +2,7 @@ on script load:
 	if {client} is set:
 		set {client} to none
 	
-	set {client} to a new mongosk client with connection string "mongodb+srv://IsaiahDB:e3mnYG40gVlq0ErC@wanders-ccrfo.mongodb.net/test"
+	set {client} to a new mongosk client with connection string "CONNECTION STRING"
 	set {database} to mongo database named "PlayerDB" from {client}
 	set {collection} to mongo collection named "profiles" from {database}
 
