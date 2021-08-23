@@ -1,5 +1,5 @@
 
-#This is a hard coded door skript, in the future, there will be an universal edition.
+#This is a hard coded door skript, in the future, there will be a universal edition.
 
 on right click:
     event-block is stone button
