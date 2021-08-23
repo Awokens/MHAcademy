@@ -1,3 +1,6 @@
+# NOTE: PARTS OF THIS SKRIPT IS DEDICATED TO THE SERVER NAMED 'WIFE'
+
+
 on damage:
 	victim is a player
 	attacker is a player
